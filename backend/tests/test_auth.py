@@ -35,3 +35,8 @@ def test_me_returns_user(client, auth_headers):
     r = client.get("/api/auth/me", headers=auth_headers)
     assert r.status_code == 200
     assert r.json()["email"] == "test@example.com"
+
+
+def test_malformed_token_rejected(client):
+    r = client.get("/api/auth/me", headers={"Authorization": "Bearer not-a-jwt"})
+    assert r.status_code == 401
